@@ -3,16 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: guigonza <guigonza@student.42.fr>          +#+  +:+       +#+         #
+#    By: carbon-m <carbon-m@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/04/07 15:57:01 by guigonza          #+#    #+#              #
-#    Updated: 2025/09/23 18:09:54 by guigonza         ###   ########.fr        #
+#    Created: 2025/10/14 17:19:15 by carbon-m          #+#    #+#              #
+#    Updated: 2025/10/14 17:20:05 by carbon-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+
 NAME        = minishell
-CC          = cc
-CFLAGS      = -Wall -Wextra -Werror 
+CC          = cc 
+CFLAGS      = -Wall -Wextra -Werror
 LDFLAGS 	= -lreadline
 
 SRC_DIR     = src
@@ -20,48 +21,50 @@ OBJ_DIR     = obj
 LIBFT_DIR   = libft
 INCLUDES    = -I. -Iincludes -I$(SRC_DIR) -I$(LIBFT_DIR)
 
-# Archivos fuente listados explícitamente
-SRC = $(SRC_DIR)/shell.c \
-      $(SRC_DIR)/main.c \
-      $(SRC_DIR)/main_utils.c \
-      $(SRC_DIR)/parser.c \
-	  $(SRC_DIR)/parse_tokens.c\
-	  $(SRC_DIR)/parse_tokens_utils.c \
-	  $(SRC_DIR)/parse_utils.c \
-	  $(SRC_DIR)/parse_utils2.c \
-	  $(SRC_DIR)/parse_pipeline.c \
-	  $(SRC_DIR)/cd.c \
-	  $(SRC_DIR)/parse_args.c \
-	  $(SRC_DIR)/parse_args_utils.c \
-	  $(SRC_DIR)/pipes.c \
-	  $(SRC_DIR)/pipes_helpers.c \
-	  $(SRC_DIR)/pipes_helpers2.c \
-	  $(SRC_DIR)/pipes_utils.c \
-      $(SRC_DIR)/enviroment.c \
-      $(SRC_DIR)/executor.c \
-      $(SRC_DIR)/redirections.c \
-      $(SRC_DIR)/redirections_helpers.c \
-	  $(SRC_DIR)/builtings.c \
-	  $(SRC_DIR)/builtin_basic.c \
-	  $(SRC_DIR)/builtin_env.c \
-	  $(SRC_DIR)/builtin_export.c \
-	  $(SRC_DIR)/builtin_export_utils.c \
-	  $(SRC_DIR)/builtin_export_utils2.c \
-	  $(SRC_DIR)/builtin_unset.c \
-	  $(SRC_DIR)/builtin_exit.c \
-	  $(SRC_DIR)/builtin_executor.c \
-	  $(SRC_DIR)/quote_expansion.c \
-	  $(SRC_DIR)/quote_expansion_helpers.c \
-	  $(SRC_DIR)/quote_expansion_utils.c \
-	  $(SRC_DIR)/here_doc.c \
-	  $(SRC_DIR)/signals.c \
-	  $(SRC_DIR)/path.c \
-	  $(SRC_DIR)/executor_utils.c \
-	  $(SRC_DIR)/executor_external.c \
-	  $(SRC_DIR)/builtin_echo.c
 
-# Archivos objeto correspondientes
-OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+SRC = \
+	builtins_advanced.c \
+	builtins_basic.c \
+	builtins_cd.c \
+	builtins_dispatch.c \
+	builtins_export.c \
+	env.c \
+	env_utils.c \
+	env_utils_remove.c \
+	error_utils.c \
+	executor.c \
+	executor_direct.c \
+	executor_main.c \
+	executor_path.c \
+	export_utils.c \
+	free_cmds.c \
+	heredoc.c \
+	heredoc_read.c \
+	heredoc_utils.c \
+	io_utils.c \
+	main.c \
+	parser_build.c \
+	parser.c \
+	parser_core.c \
+	parser_expand.c \
+	parser_loop_helpers.c \
+	parser_pipe_checks.c \
+	parser_redir.c \
+	parser_redir_utils_io.c \
+	parser_redir_utils_parse.c \
+	parser_tokens.c \
+	parser_utils.c \
+	read_input.c \
+	shell_loop.c \
+	shell_loop_exec.c \
+	signals.c \
+	utils.c \
+	terminal.c
+
+
+
+OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
 GREEN = \033[0;32m
 YELLOW = \033[1;33m
@@ -71,20 +74,30 @@ RED = \033[0;31m
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT_DIR)/libft.a
-	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) -o $(NAME) $(INCLUDES) -L$(LIBFT_DIR) -lft
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(INCLUDES) -L$(LIBFT_DIR) -lft -lreadline
 	@echo "$(GREEN)Compilación completada: $(NAME)$(RESET)"
 	@echo "$(GREEN)---------------------------------------------------------------------------------------------------"
 	@echo "$(YELLOW) ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓███████▓▒░░▒▓████████▓▒░░▒▓██████▓▒░"
 	@echo "$(YELLOW)░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░"
 	@echo "$(YELLOW)░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░    ░▒▓██▓▒░░▒▓█▓▒░░▒▓█▓▒░"
 	@echo "$(YELLOW)░▒▓█▓▒▒▓███▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒▒▓███▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░  ░▒▓██▓▒░  ░▒▓████████▓▒░"
-	@echo "$(YELLOW)░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓▓█▓▒░░▒▓██▓▒░    ░▒▓█▓▒░░▒▓█▓▒░"
-	@echo "$(YELLOW)░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░"
+	@echo "$(YELLOW)░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░    ░▒▓█▓▒░░▒▓█▓▒░"
+	@echo "$(YELLOW)░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░"
 	@echo "$(YELLOW) ░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓█▓▒░░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░"
+	@echo "$(GREEN)---------------------------------------------------------------------------------------------------"
+	@echo "$(GREEN)---------------------------------------------------------------------------------------------------"
+	@echo "$(BLUE) ░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓███████▓▒░░▒▓███████▓▒░ ░▒▓██████▓▒░░▒▓███████▓▒░ "
+	@echo "$(BLUE)░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░"
+	@echo "$(BLUE)░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░"
+	@echo "$(BLUE)░▒▓█▓▒░      ░▒▓████████▓▒░▒▓███████▓▒░░▒▓███████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░"
+	@echo "$(BLUE)░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░"
+	@echo "$(BLUE)░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░"
+	@echo "$(BLUE) ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓███████▓▒░░░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░"
 	@echo "$(GREEN)---------------------------------------------------------------------------------------------------"
 	@echo "$(GREEN)\n ¡Enhorabuena champion, todo compilado!\n"
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+
+$(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
@@ -103,6 +116,6 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
 
+.PHONY: all clean fclean re
 .SILENT:
